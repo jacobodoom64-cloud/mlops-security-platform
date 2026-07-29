@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing Terraform, tfsec, and checkov"
+      - curl -o terraform.zip https://releases.hashicorp.com/terraform/1.9.0/terraform_1.9.0_linux_amd64.zip
+      - unzip terraform.zip -d /usr/local/bin
+      - curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+      - pip install checkov
+
+  pre_build:
+    commands:
+      - cd terraform
+      - terraform init -input=false
+
+  build:
+    commands:
+      - echo "Running terraform plan"
+      - terraform plan -out=tfplan.binary -input=false
+      - echo "Running tfsec scan"
+      - tfsec . --format json --out tfsec-report.json || true
+      - echo "Running checkov scan"
+      - checkov -d . --output json --output-file-path checkov-report.json || true
+
+artifacts:
+  files:
+    - terraform/tfplan.binary
+    - terraform/tfsec-report.json
+    - terraform/checkov-report.json
+  discard-paths: no
