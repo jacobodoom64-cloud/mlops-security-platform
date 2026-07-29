@@ -16,6 +16,7 @@ phases:
 
   build:
     commands:
+      - cd terraform
       - echo "Running terraform plan"
       - terraform plan -out=tfplan.binary -input=false
       - echo "Running tfsec scan"
