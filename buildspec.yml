@@ -11,6 +11,10 @@ phases:
 
   pre_build:
     commands:
+      - echo "Current directory:"
+      - pwd
+      - echo "Contents:"
+      - ls -la 
       - cd terraform
       - terraform init -input=false
 
