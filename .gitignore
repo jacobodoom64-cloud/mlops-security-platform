@@ -1,4 +1,15 @@
-terraform/.terraform/
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/*.tfvars
+# Terraform state (contains sensitive data)
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/terraform.tfstate.*.backup
+
+# Terraform working files
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfvars
+
+# CodeBuild artifacts (regenerated on every build, shouldn't be in git)
+terraform/terraform.zip
+terraform/tfplan.binary
+terraform/tfsec-report.json
+terraform/checkov-report.json
