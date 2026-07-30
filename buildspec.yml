@@ -20,7 +20,7 @@ phases:
       - echo "Running tfsec scan"
       - cd "$CODEBUILD_SRC_DIR/terraform" && tfsec . --format json --out tfsec-report.json || true
       - echo "Running checkov scan"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && checkov -d . --output json --output-file-path checkov-report.json || true
+      - cd "$CODEBUILD_SRC_DIR/terraform" && checkov -d . --output json > checkov-report.json || true
 
 artifacts:
   files:
