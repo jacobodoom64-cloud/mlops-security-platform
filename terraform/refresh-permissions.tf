@@ -26,9 +26,12 @@ resource "aws_iam_role_policy" "codebuild_scan_refresh" {
         ]
       },
       {
-        Sid      = "CodeStarConnectionReadForRefresh"
-        Effect   = "Allow"
-        Action   = ["codestar-connections:GetConnection"]
+        Sid    = "CodeStarConnectionReadForRefresh"
+        Effect = "Allow"
+        Action = [
+          "codestar-connections:GetConnection",
+          "codestar-connections:ListTagsForResource"
+        ]
         Resource = aws_codestarconnections_connection.github.arn
       },
       {
@@ -64,9 +67,12 @@ resource "aws_iam_role_policy" "codebuild_deploy_refresh" {
         Resource = "arn:aws:iam::616150220421:role/mlops-*"
       },
       {
-        Sid      = "CodeStarConnectionReadForRefresh"
-        Effect   = "Allow"
-        Action   = ["codestar-connections:GetConnection"]
+        Sid    = "CodeStarConnectionReadForRefresh"
+        Effect = "Allow"
+        Action = [
+          "codestar-connections:GetConnection",
+          "codestar-connections:ListTagsForResource"
+        ]
         Resource = aws_codestarconnections_connection.github.arn
       },
       {
