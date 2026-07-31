@@ -16,12 +16,10 @@ phases:
 
   build:
     commands:
+      - echo "Copying reviewed plan into place"
+      - cp "$CODEBUILD_SRC_DIR_scan_output/terraform/tfplan.binary" "$CODEBUILD_SRC_DIR/terraform/tfplan.binary"
       - echo "Applying the reviewed plan"
       - cd "$CODEBUILD_SRC_DIR/terraform" && terraform apply -input=false tfplan.binary
-      - echo "Generating SBOM"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && syft dir:. -o json > sbom.json
-      - echo "Signing SBOM with cosign (keyless)"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && COSIGN_EXPERIMENTAL=1 cosign sign-blob --yes sbom.json --output-signature sbom.sig || true
 
 artifacts:
   files:
