@@ -11,7 +11,8 @@ resource "aws_iam_role_policy" "codebuild_scan_refresh" {
         Action = [
           "iam:GetRole",
           "iam:GetRolePolicy",
-          "iam:ListRolePolicies"
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies"
         ]
         Resource = "arn:aws:iam::616150220421:role/mlops-*"
       },
@@ -51,6 +52,17 @@ resource "aws_iam_role_policy" "codebuild_deploy_refresh" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      {
+        Sid    = "IAMRoleReadForRefresh"
+        Effect = "Allow"
+        Action = [
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies"
+        ]
+        Resource = "arn:aws:iam::616150220421:role/mlops-*"
+      },
       {
         Sid      = "CodeStarConnectionReadForRefresh"
         Effect   = "Allow"
