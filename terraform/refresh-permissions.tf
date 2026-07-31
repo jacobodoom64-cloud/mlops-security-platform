@@ -35,6 +35,16 @@ resource "aws_iam_role_policy" "codebuild_scan_refresh" {
         Resource = aws_codestarconnections_connection.github.arn
       },
       {
+        Sid    = "CodePipelineReadForRefresh"
+        Effect = "Allow"
+        Action = [
+          "codepipeline:GetPipeline",
+          "codepipeline:GetPipelineState",
+          "codepipeline:ListTagsForResource"
+        ]
+        Resource = aws_codepipeline.mlops_pipeline.arn
+      },
+      {
         Sid    = "S3BucketConfigReadForRefresh"
         Effect = "Allow"
         Action = [
@@ -74,6 +84,16 @@ resource "aws_iam_role_policy" "codebuild_deploy_refresh" {
           "codestar-connections:ListTagsForResource"
         ]
         Resource = aws_codestarconnections_connection.github.arn
+      },
+      {
+        Sid    = "CodePipelineReadForRefresh"
+        Effect = "Allow"
+        Action = [
+          "codepipeline:GetPipeline",
+          "codepipeline:GetPipelineState",
+          "codepipeline:ListTagsForResource"
+        ]
+        Resource = aws_codepipeline.mlops_pipeline.arn
       },
       {
         Sid    = "S3BucketConfigReadForRefresh"
