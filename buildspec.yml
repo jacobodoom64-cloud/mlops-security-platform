@@ -11,20 +11,20 @@ phases:
 
   pre_build:
     commands:
-      - cd "$CODEBUILD_SRC_DIR/terraform" && terraform init -input=false
+      - cd "$CODEBUILD_SRC_DIR/workload" && terraform init -input=false
 
   build:
     commands:
       - echo "Running terraform plan"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && terraform plan -out=tfplan.binary -input=false
+      - cd "$CODEBUILD_SRC_DIR/workload" && terraform plan -out=tfplan.binary -input=false
       - echo "Running tfsec scan"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && tfsec . --format json --out tfsec-report.json || true
+      - cd "$CODEBUILD_SRC_DIR/workload" && tfsec . --format json --out tfsec-report.json || true
       - echo "Running checkov scan"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && checkov -d . --output json > checkov-report.json || true
+      - cd "$CODEBUILD_SRC_DIR/workload" && checkov -d . --output json > checkov-report.json || true
 
 artifacts:
   files:
-    - terraform/tfplan.binary
-    - terraform/tfsec-report.json
-    - terraform/checkov-report.json
+    - workload/tfplan.binary
+    - workload/tfsec-report.json
+    - workload/checkov-report.json
   discard-paths: no

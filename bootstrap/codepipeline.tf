@@ -63,19 +63,20 @@ resource "aws_codepipeline" "mlops_pipeline" {
   stage {
     name = "Deploy"
 
-    action {
+   action {
       name            = "ApplyAndSign"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
       version         = "1"
-      input_artifacts = ["scan_output"]
+      input_artifacts = ["source_output", "scan_output"]
 
       configuration = {
-        ProjectName = aws_codebuild_project.mlops_deploy.name
+        ProjectName   = aws_codebuild_project.mlops_deploy.name
+        PrimarySource = "source_output"
       }
     }
-  }
+ }
 
   tags = {
     Project = "mlops-security-platform"

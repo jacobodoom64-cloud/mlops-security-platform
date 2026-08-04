@@ -37,13 +37,15 @@ resource "aws_iam_role_policy" "codebuild_scan_artifacts" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Sid    = "ArtifactBucketReadAccess"
+      Sid    = "ArtifactBucketReadWriteAccess"
       Effect = "Allow"
       Action = [
         "s3:GetObject",
-        "s3:GetObjectVersion"
+        "s3:GetObjectVersion",
+        "s3:PutObject"
       ]
       Resource = "${aws_s3_bucket.pipeline_artifacts.arn}/*"
     }]
   })
 }
+

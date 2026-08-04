@@ -3,26 +3,17 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Installing Terraform, syft, and cosign"
+      - echo "Installing Terraform"
       - curl -o terraform.zip https://releases.hashicorp.com/terraform/1.9.0/terraform_1.9.0_linux_amd64.zip
       - unzip terraform.zip -d /usr/local/bin
-      - curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-      - curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64
-      - chmod +x /usr/local/bin/cosign
 
   pre_build:
     commands:
-      - cd "$CODEBUILD_SRC_DIR/terraform" && terraform init -input=false
+      - cd "$CODEBUILD_SRC_DIR/workload" && terraform init -input=false
 
   build:
     commands:
       - echo "Copying reviewed plan into place"
-      - cp "$CODEBUILD_SRC_DIR_scan_output/terraform/tfplan.binary" "$CODEBUILD_SRC_DIR/terraform/tfplan.binary"
+      - cp "$CODEBUILD_SRC_DIR_scan_output/workload/tfplan.binary" "$CODEBUILD_SRC_DIR/workload/tfplan.binary"
       - echo "Applying the reviewed plan"
-      - cd "$CODEBUILD_SRC_DIR/terraform" && terraform apply -input=false tfplan.binary
-
-artifacts:
-  files:
-    - terraform/sbom.json
-    - terraform/sbom.sig
-  discard-paths: no
+      - cd "$CODEBUILD_SRC_DIR/workload" && terraform apply -input=false tfplan.binary
