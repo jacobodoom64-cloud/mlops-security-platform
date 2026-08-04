@@ -1,5 +1,11 @@
 version: 0.2
 
+env:
+  variables:
+    AWS_REGION: "eu-north-1"
+    ECR_REPO: "mlops-model-inference"
+    ACCOUNT_ID: "616150220421"
+
 phases:
   install:
     commands:
@@ -9,10 +15,19 @@ phases:
 
   pre_build:
     commands:
+      - echo "Logging in to ECR"
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - cd "$CODEBUILD_SRC_DIR/workload" && terraform init -input=false
 
   build:
     commands:
+      - echo "Building container image"
+      - cd "$CODEBUILD_SRC_DIR" && docker build -t $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - echo "Tagging and pushing to ECR"
+      - docker tag $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag $ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
+      - docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
       - echo "Copying reviewed plan into place"
       - cp "$CODEBUILD_SRC_DIR_scan_output/workload/tfplan.binary" "$CODEBUILD_SRC_DIR/workload/tfplan.binary"
       - echo "Applying the reviewed plan"

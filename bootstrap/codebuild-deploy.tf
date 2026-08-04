@@ -17,7 +17,7 @@ resource "aws_codebuild_project" "mlops_deploy" {
     image                       = "aws/codebuild/standard:7.0"
     compute_type                = "BUILD_GENERAL1_SMALL"
     image_pull_credentials_type = "CODEBUILD"
-    privileged_mode             = false
+    privileged_mode             = true
   }
 
   logs_config {
