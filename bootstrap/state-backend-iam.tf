@@ -10,19 +10,10 @@ resource "aws_iam_role_policy" "codebuild_scan_state" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject"
+          "s3:PutObject",
+          "s3:DeleteObject"
         ]
         Resource = "arn:aws:s3:::mlops-security-platform-tfstate-616150220421/project1/*"
-      },
-      {
-        Sid    = "StateLockTableAccess"
-        Effect = "Allow"
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem"
-        ]
-        Resource = "arn:aws:dynamodb:eu-north-1:616150220421:table/mlops-security-platform-tf-lock"
       }
     ]
   })
@@ -40,19 +31,10 @@ resource "aws_iam_role_policy" "codebuild_deploy_state" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject"
+          "s3:PutObject",
+          "s3:DeleteObject"
         ]
         Resource = "arn:aws:s3:::mlops-security-platform-tfstate-616150220421/project1/*"
-      },
-      {
-        Sid    = "StateLockTableAccess"
-        Effect = "Allow"
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem"
-        ]
-        Resource = "arn:aws:dynamodb:eu-north-1:616150220421:table/mlops-security-platform-tf-lock"
       }
     ]
   })
