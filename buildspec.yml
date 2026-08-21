@@ -16,7 +16,7 @@ phases:
   build:
     commands:
       - echo "Running terraform plan"
-      - cd "$CODEBUILD_SRC_DIR/workload" && terraform plan -out=tfplan.binary -input=false
+      - cd "$CODEBUILD_SRC_DIR/workload" && terraform plan -out=tfplan.binary -input=false -var="image_tag=$CODEBUILD_RESOLVED_SOURCE_VERSION"
       - echo "Running tfsec scan"
       - cd "$CODEBUILD_SRC_DIR/workload" && tfsec . --format json --out tfsec-report.json || true
       - echo "Running checkov scan"

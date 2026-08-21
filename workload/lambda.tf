@@ -49,7 +49,7 @@ resource "aws_lambda_function" "inference" {
   function_name = "mlops-model-inference"
   role          = aws_iam_role.lambda_exec.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.model.repository_url}:latest"
+  image_uri     = "${aws_ecr_repository.model.repository_url}:${var.image_tag}"
 
   memory_size = 3008
   timeout     = 120
