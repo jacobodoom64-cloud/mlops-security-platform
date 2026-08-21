@@ -1,0 +1,16 @@
+.git
+.github
+**/.terraform
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+*.tfvars
+docs
+kubernetes
+monitoring
+security
+pipeline
+terraform-backend-setup
+bootstrap
+workload
+*.md

@@ -51,8 +51,8 @@ resource "aws_lambda_function" "inference" {
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.model.repository_url}:latest"
 
-  memory_size = 512
-  timeout     = 30
+  memory_size = 3008
+  timeout     = 120
 
   tags = {
     Project = "mlops-security-platform"

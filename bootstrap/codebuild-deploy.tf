@@ -15,7 +15,7 @@ resource "aws_codebuild_project" "mlops_deploy" {
   environment {
     type                        = "LINUX_CONTAINER"
     image                       = "aws/codebuild/standard:7.0"
-    compute_type                = "BUILD_GENERAL1_SMALL"
+    compute_type                = "BUILD_GENERAL1_LARGE"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
   }

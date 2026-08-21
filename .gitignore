@@ -13,3 +13,7 @@ terraform/terraform.zip
 terraform/tfplan.binary
 terraform/tfsec-report.json
 terraform/checkov-report.json
+
+# Local test artifacts
+response.json
+get-docker.sh
